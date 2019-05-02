@@ -2,12 +2,12 @@
 #include <IRrecv.h>
 #include <IRutils.h>
 
-const int RECV_PIN = D3;
+const int RECV_PIN = D4; //Connect the signal pin of the Recever on D3
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200); // to listen value with serial moniteur we must are in 115200 bauds
   irrecv.enableIRIn();
 }
 
