@@ -10,8 +10,8 @@ const int signalOnOffTV = 0x4C;
 
 ESP8266WebServer server(80);
 IRsend irsend(kIrLed);  // Set the GPIO to be used to sending the message.
-char ssid[] = "KakarotCake";                //your network SSID (name)
-char pass[] = "jesuisunelicorne";             //your network password
+const char ssid[] = "KakarotCake";                //your network SSID (name)
+const char pass[] = "jesuisunelicorne";             //your network password
 const IPAddress ip(192,168,43,116); //IP of your wemos
 
 
