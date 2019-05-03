@@ -4,14 +4,15 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const uint16_t kIrLed = 0;  // ESP8266 GPIO pin to use. Recommended: 0 (D3).
+const uint16_t kIrLed = 15;  // ESP8266 GPIO pin for the IR LED Signal.
+const uint16_t kGround = 12;  // ESP8266 GPIO pin for the Ground.
 const int signalOnOffVideoProj = 0x00C1AA09F6;
 const int signalOnOffTV = 0x4C;
 
 ESP8266WebServer server(80);
 IRsend irsend(kIrLed);  // Set the GPIO to be used to sending the message.
-const char ssid[] = "KakarotCake";                //your network SSID (name)
-const char pass[] = "jesuisunelicorne";             //your network password
+const char ssid[] = "NETWORK_SSID";                //your network SSID (name)
+const char pass[] = "NETWORK_PASSWORD";             //your network password
 const IPAddress ip(192,168,43,116); //IP of your wemos
 
 
@@ -47,9 +48,10 @@ void handleNotFound() {
 }
 
 void setup() {
-  WiFi.begin(ssid, pass);  
-  IPAddress gateway(192,168,43,1);   
-  IPAddress subnet(255,255,255,0);   
+  pinMode(kGround, OUTPUT);
+  WiFi.begin(ssid, pass);
+  IPAddress gateway(192,168,43,1);
+  IPAddress subnet(255,255,255,0);
   WiFi.config(ip, gateway, subnet);
   irsend.begin();
   Serial.begin(115200, SERIAL_8N1, SERIAL_TX_ONLY);
@@ -75,6 +77,7 @@ void setup() {
 }
 
 void loop() {
+  digitalWrite(kGround, LOW);
   server.handleClient();
   MDNS.update();
 }

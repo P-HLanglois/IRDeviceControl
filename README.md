@@ -74,7 +74,7 @@ The logic is quite simillar, routes are defined and each of them uses a handler.
 // Replace these variables
 const char ssid[] = "NETWORK_SSID";
 const char pass[] = "NETWORK_PASSWORD";
-const IPAddress ip(XXX,XXX,XXX,XXX);
+const IPAddress ip(192,168,43,116);
 ```
 
    - `ssid` : SSID of your access point
