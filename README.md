@@ -1,37 +1,94 @@
-## Welcome to GitHub Pages
+# Infrared Device Control
 
-You can use the [editor on GitHub](https://github.com/P-HLanglois/IRDeviceControl/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+>By TORGUE Guilhem, PEAN Michaël and LANGLOIS Pierre-Henry
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Description
 
-### Markdown
+The objective of this project was to create a **IoT device** acting on one hand as a **http server able to receive http requests**
+and on the other hand as a **Infrared emittor to switch on and off differents appliances**.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+This project also contains a simple Node.js web interface example, calling the IoT device's APIs.
 
-```markdown
-Syntax highlighted code block
+## How does it work ?
 
-# Header 1
-## Header 2
-### Header 3
+### Schema / Wiring
 
-- Bulleted
-- List
+<img src="Documentation/Ressources/Schema_ir_led.png" width="400">
 
-1. Numbered
-2. List
+### Explanation
 
-**Bold** and _Italic_ and `Code` text
+On this project the wiring remains very simple, the LED is connected on the Wemos device following the scheme.
 
-[Link](url) and ![Image](src)
+The Wemos is connected to a LAN via WIFI and host a web server receiving the http calls.
+
+Following the request received, the Wemos will call the appropriate callback function to use the IR LED.
+
+The IR LED will then send the appropriate IR signal.
+
+<img src="Documentation/Ressources/Flowchart.png" width="1000">
+
+### Hardware
+
+| Reference |                Product                |  Qty  |               Price |
+| --------- | :-----------------------------------: | :---: | ------------------: |
+| ESP8266   | WEMOS D1 Mini ESP8266 Microcontroller |   1   |               2,99€ |
+| VMA316    |      Infrared Transmitter Module      |   1   | 4,94€ (bundle of 2) |
+
+### Code
+
+The code to send to the Wemos is contained in the **InfraredManager** repertory.
+
+Our code is based on the [Hello Server Example for ESP8266](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WebServer/examples/HelloServer/HelloServer.ino).
+
+The logic is quite simillar, routes are defined and each of them uses a handler.
+
+### Final Result
+
+<img src="Documentation/Ressources/Real_device.jpg" width="700">
+
+## Setup step by step
+
+1. Set the `Complementary board URL` in the Arduino IDE settings: `http://arduino.esp8266.com/stable/package_esp8266com_index.json`
+
+2. In the `Tools` menu :
+    Go to`Board Type -> Board Manager` and install the following packages: `esp8266`
+
+3. Then, in the `Tools` menu, select the following values:
+   - Board type: `LOLIN(WeMos) D1 R2 & mini`
+   - Upload Speed : `921600` (go lower if flashing fails)
+   - Port : Select the correct port on which the Wemos is connected
+
+4. Import the following libraries :
+
+   - IRremoteESP8266
+   - IRsend
+   - WiFiUdp
+   - OSCMessage
+   - ESP8266WiFi
+   - ESP8266mDNS
+   - ESP8266WebServer
+
+5. Change the following constants values in `InfraredManager/InfraredManager.ino`
+
+```cpp
+// Replace these variables
+const char ssid[] = "NETWORK_SSID";
+const char pass[] = "NETWORK_PASSWORD";
+const IPAddress ip(XXX,XXX,XXX,XXX);
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+   - `ssid` : SSID of your access point
+   - `pass` : password of your access point
+   - `ip` : fixed ip address of the Wemos
 
-### Jekyll Themes
+6. Save and load the code to the Wemos
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/P-HLanglois/IRDeviceControl/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+7. Try to request the ip of the Wemos while being on the same network, direct the LED to the corresponding device, and enjoy !
 
-### Support or Contact
+## Node.js server
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+You can start the server using :
+```bash
+npm install
+node index.js
+```
