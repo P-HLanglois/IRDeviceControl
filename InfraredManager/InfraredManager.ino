@@ -77,7 +77,4 @@ void setup() {
 void loop() {
   server.handleClient();
   MDNS.update();
-  delay(5000);
-  throwSignalOnOffVideoProj();
-  
 }
