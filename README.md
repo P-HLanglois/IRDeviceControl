@@ -92,3 +92,13 @@ You can start the server using :
 npm install
 node index.js
 ```
+
+You can then access the web interface on localhost:3000.
+
+## Possible upgrades
+
+<img src="Documentation/Ressources/Possible_upgrade.png" width="400">
+
+One way to create a better remote control would be to power up the signal using a transistor. As we generate a weak signal with this device, reaching the receiver may be sometimes troublesome. Emitting a signal using this schema would be easier that way and possible from anywhere in the room.
+
+Other ways to upgrade the device would be to add more controls over the appliances, by using more signals.
