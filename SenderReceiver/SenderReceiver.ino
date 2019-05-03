@@ -1,21 +1,17 @@
-#ifndef UNIT_TEST
-#include <Arduino.h>
-#endif
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
-#include <IRremoteESP8266.h>
 #include <IRrecv.h>
 #include <IRutils.h>
 
 const int RECV_PIN = D4;
-IRrecv irrecv(RECV_PIN);
 decode_results results;
 
-const uint16_t kIrLed = 0;  // ESP8266 GPIO pin to use. Recommended: 0 (D3).
+const uint16_t kIrLed = D6;  // ESP8266 GPIO pin to use. Recommended: 0 (D3).
 const int signalOnOffVideoProj = 0x00C1AA09F6;
 const int signalOnOffTV = 0x4C;
 
-IRsend irsend(kIrLed);  // Set the GPIO to be used to sending the message.
+IRrecv irrecv(RECV_PIN); // Set the GPIO to be used to listen the message.
+IRsend irsend(D6);  // Set the GPIO to be used to sending the message.
 
 void setup(){
   irsend.begin();
@@ -23,6 +19,7 @@ void setup(){
   irrecv.enableIRIn();
 }
 
+// This code permit to listen the value which we throw, it s usefull to verify if the value is good.
 void loop(){
   if (irrecv.decode(&results)){
         serialPrintUint64(results.value, HEX);
@@ -47,7 +44,7 @@ void loop(){
           }
         irrecv.resume();
  }
-// irsend.sendNEC(signalOnOffVideoProj);
- irsend.sendRC5(signalOnOffTV);
+ irsend.sendNEC(signalOnOffVideoProj);
+ //irsend.sendRC5(signalOnOffTV);
  delay(3000);
 }
